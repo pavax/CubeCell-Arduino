@@ -68,6 +68,11 @@ public:
   void displaySending();
   void displayAck();
   void displayMcuInit();
+  void enableRgb();
+  void disableRgb();
+  void enableDisplay();
+  void disableDisplay();
+  boolean isDisplayEnabled();
 #endif
 };
 
