@@ -61,12 +61,13 @@ public:
   void setDataRateForNoADR(int8_t dataRate);
   void ifskipjoin();
   void generateDeveuiByChipID();
+  void onWakeup();
 
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
   void displayJoining();
   void displayJoined();
   void displaySending();
-  void displayAck();
+  void displayAck(boolean disableDisplayAfterAck = true, boolean disableRgbAfterAck = true);
   void displayMcuInit();
   void enableRgb();
   void disableRgb();

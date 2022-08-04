@@ -727,6 +727,11 @@ void LoRaWanClass::ifskipjoin()
 	}
 }
 
+void LoRaWanClass::onWakeup()
+{
+	OnTxNextPacketTimerEvent();
+}
+
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
 void LoRaWanClass::displayJoining()
 {
@@ -761,7 +766,7 @@ void LoRaWanClass::displaySending()
 		delay(1000);
 	}
 }
-void LoRaWanClass::displayAck()
+void LoRaWanClass::displayAck(boolean disableDisplayAfterAck, boolean disableRgbAfterAck)
 {
 	if (displayIsEnabled) {
 		if(ifDisplayAck==0)
@@ -787,18 +792,18 @@ void LoRaWanClass::displayAck()
 		{
 			delay(2000);
 			isDisplayOn = 0;
-			digitalWrite(Vext,HIGH);
 			display.stop();
-		}
-	} else {
-		if(ifDisplayAck==1)
-		{
-			ifDisplayAck=0;
-			isDisplayOn = 0;
+			if (disableDisplayAfterAck)
+			{
+				displayIsEnabled = false;
+			}
+			if (disableRgbAfterAck) 
+			{
+				rgbIsEnabled = false;
+			}
 			digitalWrite(Vext,HIGH);
-			display.stop();
 		}
-	}
+	} 
 }
 void LoRaWanClass::displayMcuInit()
 {
