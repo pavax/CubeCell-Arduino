@@ -261,6 +261,17 @@ void turnOffRGB(void)
 	digitalWrite(Vext,HIGH);
 #endif
 }
+#else
+void turnOnRGB(uint32_t color,uint32_t time)
+{
+	return;
+}
+
+void turnOffRGB(void)
+{
+	return;
+}
+
 #endif
 
 
@@ -288,6 +299,7 @@ void __attribute__((weak)) downLinkDataHandle(McpsIndication_t *mcpsIndication)
  *               containing indication attributes.
  */
 int revrssi;
+int revsnr;
 static void McpsIndication( McpsIndication_t *mcpsIndication )
 {
 	if( mcpsIndication->Status != LORAMAC_EVENT_INFO_STATUS_OK )
@@ -297,6 +309,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
 	ifDisplayAck=1;
 	revrssi=mcpsIndication->Rssi;
+	revsnr=mcpsIndication->Snr;
 #endif
 #if (LoraWan_RGB==1)
 	turnOnRGB(COLOR_RECEIVED, 200);
@@ -794,8 +807,8 @@ void LoRaWanClass::displayAck(boolean disableDisplayAfterAck, boolean disableRgb
 		ifDisplayAck=0;
 		display.clear();
 		display.drawString(64, 22, "ACK RECEIVED");
-		char temp[10];
-		sprintf(temp,"rssi: %d ",revrssi);
+		char temp[30];
+		sprintf(temp,"rssi: %d, snr: %d ",revrssi,revsnr);
 		display.setFont(ArialMT_Plain_10);
 		display.setTextAlignment(TEXT_ALIGN_RIGHT);
 		display.drawString(128, 0, temp);

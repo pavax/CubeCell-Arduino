@@ -137,7 +137,6 @@ bool HardwareSerial::begin(uint32_t baud, uint32_t config, int rxPin, int txPin,
 	}
 	_rxbuff[_uart_num].rx_r=0;
 	_rxbuff[_uart_num].rx_w=0;
-	_rxbuff[_uart_num].rx_buf=(uint8_t*) malloc(UART_RX_SIZE);
 
 	if( _uart_num == UART_NUM_0) 
 	{
@@ -176,7 +175,6 @@ void HardwareSerial::updateBaudRate(unsigned long baud)
 
 void HardwareSerial::end()
 {
-  free(_rxbuff[_uart_num].rx_buf);
 	if( _uart_num == UART_NUM_0)
 	{
 		UART_1_Stop();
@@ -319,13 +317,13 @@ void HardwareSerial::flush()
 	{
 		UART_1_SpiUartClearRxBuffer();
 		while (UART_1_SpiUartGetTxBufferSize());
-		UART_1_SpiUartClearTxBuffer();
+// 		UART_1_SpiUartClearTxBuffer();
 	}
 	else
 	{
 		UART_2_SpiUartClearRxBuffer();
 		while (UART_2_SpiUartGetTxBufferSize());
-		UART_2_SpiUartClearTxBuffer();	
+// 		UART_2_SpiUartClearTxBuffer();	
 	}
 }
 
