@@ -61,7 +61,14 @@ public:
   void setDataRateForNoADR(int8_t dataRate);
   void ifskipjoin();
   void generateDeveuiByChipID();
-  void onWakeup();
+  void txNextPacket();
+  boolean hasReceivedAck();
+  void resetReceivedAck();
+
+#if(LoraWan_RGB==1)
+  void enableRgb();
+  void disableRgb();
+#endif
 
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
   void displayJoining();
@@ -69,8 +76,6 @@ public:
   void displaySending();
   void displayAck(boolean disableDisplayAfterAck = true, boolean disableRgbAfterAck = true);
   void displayMcuInit();
-  void enableRgb();
-  void disableRgb();
   void enableDisplay();
   void disableDisplay();
   boolean isDisplayEnabled();

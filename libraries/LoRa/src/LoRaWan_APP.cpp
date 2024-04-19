@@ -38,6 +38,8 @@ bool rgbIsEnabled = false;
   uint8_t isDisplayOn=0;
 #endif
 
+uint8_t receivedAck=0;
+
 /*loraWan default Dr when adr disabled*/
 #ifdef REGION_US915
 int8_t defaultDrForNoAdr = 3;
@@ -300,6 +302,7 @@ static void McpsIndication( McpsIndication_t *mcpsIndication )
 	turnOnRGB(COLOR_RECEIVED, 200);
 	turnOffRGB();
 #endif
+	receivedAck=1;
 	printf( "received ");
 	switch( mcpsIndication->McpsIndication )
 	{
@@ -727,10 +730,25 @@ void LoRaWanClass::ifskipjoin()
 	}
 }
 
-void LoRaWanClass::onWakeup()
+void LoRaWanClass::txNextPacket()
 {
 	OnTxNextPacketTimerEvent();
 }
+
+#if(LoraWan_RGB==1)
+void LoRaWanClass::enableRgb()
+{
+	if (!rgbIsEnabled) {
+		rgbIsEnabled = true;
+	}
+}
+void LoRaWanClass::disableRgb()
+{
+	if (rgbIsEnabled) {
+		rgbIsEnabled = false;
+	}
+}
+#endif
 
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
 void LoRaWanClass::displayJoining()
@@ -821,22 +839,6 @@ void LoRaWanClass::displayMcuInit()
 	}
 }
 
-void LoRaWanClass::enableRgb()
-{
-	if (!rgbIsEnabled) {
-		rgbIsEnabled = true;
-		if (digitalRead(Vext) == HIGH){
-			digitalWrite(Vext, LOW);
-		 	printf("vext on\r\n");
-		}
-	}
-}
-void LoRaWanClass::disableRgb()
-{
-	if (rgbIsEnabled) {
-		rgbIsEnabled = false;
-	}
-}
 void LoRaWanClass::enableDisplay()
 {
 	if (!displayIsEnabled) {
@@ -859,6 +861,16 @@ void LoRaWanClass::disableDisplay()
  }
 
 #endif
+
+ boolean LoRaWanClass::hasReceivedAck()
+ {
+	 return receivedAck;
+ }
+
+void LoRaWanClass::resetReceivedAck()
+ {
+	 receivedAck=0;
+ }
 
 LoRaWanClass LoRaWAN;
 
