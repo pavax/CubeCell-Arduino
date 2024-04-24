@@ -68,6 +68,7 @@ public:
 #if(LoraWan_RGB==1)
   void enableRgb();
   void disableRgb();
+  boolean isRgbEnabled();
 #endif
 
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)

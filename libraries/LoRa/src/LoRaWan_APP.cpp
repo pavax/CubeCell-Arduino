@@ -761,6 +761,10 @@ void LoRaWanClass::disableRgb()
 		rgbIsEnabled = false;
 	}
 }
+boolean LoRaWanClass::isRgbEnabled()
+{
+	return rgbIsEnabled;
+}
 #endif
 
 #if defined(CubeCell_BoardPlus)||defined(CubeCell_GPS)
